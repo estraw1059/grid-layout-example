@@ -1,26 +1,71 @@
 "use client"
-import GridLayout from "react-grid-layout";
+import GridLayout, { ItemCallback, Layout } from "react-grid-layout";
 import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
+import { JSX, useEffect, useState } from "react";
+
+const layout = [
+  { i: "a", x: 0, y: 0, w: 1, h: 2, static: true },
+  { i: "b", x: 0, y: 0, w: 3, h: 2, minW: 2, maxW: 4 },
+  { i: "c", x: 0, y: 0, w: 1, h: 2 }
+];
 
 export default function Home() {
-  const layout = [
-    { i: "a", x: 0, y: 0, w: 1, h: 2, static: true },
-    { i: "b", x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4 },
-    { i: "c", x: 4, y: 0, w: 1, h: 2 }
-  ];
+
+  const [boxes, setBoxes] = useState<JSX.Element[]>([]);
+
+  useEffect(() => {
+    const newBoxes = layout.map(item => (
+      <div key={item.i} className="border border-black">{item.i}</div>
+    ));
+    setBoxes(newBoxes);
+  }, [layout]);
+
+
+  const addNewBox = () => {
+    layout.push({
+      i: "n" + new Date().getTime(),
+      x: (layout.length * 2) % (12 - 2),
+      y: Infinity, // puts it at the bottom
+      w: 2,
+      h: 2
+    });
+    const newBoxes = layout.map(item => (
+      <div key={item.i} className="border border-black">{item.i}</div>
+    ));
+    setBoxes(newBoxes);
+  };
+
+
+  const handleItemCallback: ItemCallback = (
+    layout: Layout[],
+    oldItem: Layout,
+    newItem: Layout,
+    placeholder: Layout,
+    event: MouseEvent,
+    element: HTMLElement
+  ) => {
+    console.log("Layout:", layout);
+    console.log("Old Item:", oldItem);
+    console.log("New Item:", newItem);
+    console.log("Placeholder:", placeholder);
+    console.log("Event:", event);
+    console.log("Element:", element);
+  };
   return (
-    <GridLayout
-      className="layout border-black"
-      autosize={false}
-      layout={layout}
-      cols={12}
-      rowHeight={30}
-      width={1200}
-    >
-      <div key="a" className="border border-black">a</div>
-      <div key="b" className="border border-black">b</div>
-      <div key="c" className="border border-black">c</div>
-    </GridLayout>
+    <div>
+      <button onClick={addNewBox}>Add new box</button>
+      <GridLayout
+        className="layout border-black"
+        onResizeStop={handleItemCallback}
+        onDragStop={handleItemCallback}
+        layout={layout}
+        cols={12}
+        rowHeight={30}
+        width={1200}
+      >
+        {boxes}
+      </GridLayout>
+    </div>
   );
 }
