@@ -3,14 +3,11 @@ import GridLayout, { ItemCallback, Layout } from "react-grid-layout";
 import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
 import { JSX, useEffect, useState } from "react";
+import layoutData from "./layout.json";
 
-const layout = [
-  { i: "a", x: 0, y: 0, w: 1, h: 2, static: true },
-  { i: "b", x: 0, y: 0, w: 3, h: 2, minW: 2, maxW: 4 },
-  { i: "c", x: 0, y: 0, w: 1, h: 2 }
-];
 
 export default function Home() {
+  const layout: Layout[] = layoutData;
 
   const [boxes, setBoxes] = useState<JSX.Element[]>([]);
 
