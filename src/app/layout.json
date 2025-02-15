@@ -1,6 +1,1 @@
-[
-    { "i": "a", "x": 0, "y": 0, "w": 1, "h": 2, "static": true },
-    { "i": "b", "x": 0, "y": 0, "w": 3, "h": 2, "minW": 2, "maxW": 4 },
-    { "i": "c", "x": 0, "y": 0, "w": 1, "h": 2 },
-    { "i": "d", "x": 0, "y": 0, "w": 1, "h": 2 }
-]
+[{"w":2,"h":5,"x":0,"y":0,"i":"n1739646579199","moved":false,"static":false},{"w":5,"h":6,"x":0,"y":5,"i":"n1739646581686","moved":false,"static":false},{"w":2,"h":2,"x":4,"y":11,"i":"n1739647353422","moved":false,"static":false},{"w":2,"h":10,"x":5,"y":0,"i":"n1739647353846","moved":false,"static":false}]
