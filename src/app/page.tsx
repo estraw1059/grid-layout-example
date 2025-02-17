@@ -3,11 +3,27 @@ import GridLayout, { ItemCallback, Layout } from "react-grid-layout";
 import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
 import { JSX, useEffect, useState } from "react";
+import { Responsive, WidthProvider } from "react-grid-layout";
+
+const ResponsiveGridLayout = WidthProvider(Responsive);
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [layout, setLayout] = useState<Layout[]>([]);
   const [boxes, setBoxes] = useState<JSX.Element[]>([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     // Fetch the latest layout data from the server
@@ -63,6 +79,7 @@ export default function Home() {
   const handleItemCallback: ItemCallback = (
     newLayout: Layout[],
   ) => {
+    console.log("Item was moved", newLayout);
     setLayout(newLayout);
   };
 
@@ -70,23 +87,36 @@ export default function Home() {
     return <div>Loading...</div>;
   }
 
+  const responsiveProps = {
+    className: "responsive-grid",
+    breakpoints: {lg: 721, sm: 720},
+    cols: { lg: 3, md: 3, sm: 2, xs: 1, xxs: 1 },
+    layouts: {
+      lg: [{ i: "n1739646579199", x: 0, y: 0, w: 10, h: 10 }],
+      sm: [{ i: "n1739646579199", x: 0, y: 0, w: 1, h: 1 }],
+      // More layouts for other breakpoints...
+    },
+    onResizeStop: handleItemCallback,
+    onDragStop: handleItemCallback
+  };
+
   return (
-    <div className="h-screen w-screen">
+    <div>
       <button onClick={saveLayout}>Save Layout</button>
       <br/>
       <button onClick={addNewBox}>Add new box</button>
-      <GridLayout
-        className="layouts border-black"
-        onResizeStop={handleItemCallback}
-        onDragStop={handleItemCallback}
-        layout={layout}
-        cols={12}
-        rowHeight={30}
-        width={1200}
-        autoSize={true}
+      <ResponsiveGridLayout
+        // className="responsive-grid border-black h-screen w-screen"
+        // onResizeStop={handleItemCallback}
+        // onDragStop={handleItemCallback}
+        // cols={lg: 3, md: 3, sm: 2, xs: 1, xxs: 1}
+        // rowHeight={30}
+        // width={1200}
+        // autoSize={true}
+        {...responsiveProps}
       >
         {boxes}
-      </GridLayout>
+      </ResponsiveGridLayout>
     </div>
   );
 }
