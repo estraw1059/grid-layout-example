@@ -88,9 +88,10 @@ export default function Home() {
 
   return (
     <div>
-      <button onClick={saveLayout}>Save Layout</button>
-      <br/>
-      <button onClick={addNewBox}>Add new box</button>
+      <div className="flex flex-row">
+        <button className="m-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={saveLayout}>Save Layout</button>
+        <button className="m-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={addNewBox}>Add new article</button>
+      </div>
       <div>
         <ResponsiveGridLayout
           // className="responsive-grid border-black h-screen w-screen"
