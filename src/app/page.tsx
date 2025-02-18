@@ -1,29 +1,16 @@
 "use client"
-import GridLayout, { ItemCallback, Layout } from "react-grid-layout";
+import { ItemCallback, Layout } from "react-grid-layout";
 import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
 import { JSX, useEffect, useState } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 
-const ResponsiveGridLayout = WidthProvider(Responsive);
 
+const ResponsiveGridLayout = WidthProvider(Responsive);
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [layout, setLayout] = useState<Layout[]>([]);
   const [boxes, setBoxes] = useState<JSX.Element[]>([]);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   useEffect(() => {
     // Fetch the latest layout data from the server
@@ -88,12 +75,11 @@ export default function Home() {
   }
 
   const responsiveProps = {
-    className: "responsive-grid",
-    breakpoints: {lg: 721, sm: 720},
-    cols: { lg: 3, md: 3, sm: 2, xs: 1, xxs: 1 },
+    className: "layout",
+    breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
+    cols: { lg: 12, md: 12, sm: 6, xs: 3, xxs: 1 },
     layouts: {
-      lg: [{ i: "n1739646579199", x: 0, y: 0, w: 10, h: 10 }],
-      sm: [{ i: "n1739646579199", x: 0, y: 0, w: 1, h: 1 }],
+      lg: layout,
       // More layouts for other breakpoints...
     },
     onResizeStop: handleItemCallback,
@@ -105,18 +91,19 @@ export default function Home() {
       <button onClick={saveLayout}>Save Layout</button>
       <br/>
       <button onClick={addNewBox}>Add new box</button>
-      <ResponsiveGridLayout
-        // className="responsive-grid border-black h-screen w-screen"
-        // onResizeStop={handleItemCallback}
-        // onDragStop={handleItemCallback}
-        // cols={lg: 3, md: 3, sm: 2, xs: 1, xxs: 1}
-        // rowHeight={30}
-        // width={1200}
-        // autoSize={true}
-        {...responsiveProps}
-      >
-        {boxes}
-      </ResponsiveGridLayout>
+      <div>
+        <ResponsiveGridLayout
+          // className="responsive-grid border-black h-screen w-screen"
+          // onResizeStop={handleItemCallback}
+          // onDragStop={handleItemCallback}
+          // cols={lg: 3, md: 3, sm: 2, xs: 1, xxs: 1}
+          rowHeight={30}
+          // autoSize={true}
+          {...responsiveProps}
+        >
+          {boxes}
+        </ResponsiveGridLayout>
+      </div>
     </div>
   );
 }
